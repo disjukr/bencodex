@@ -1,0 +1,18 @@
+{
+  "name": "bencodex",
+  "version": "0.0.0",
+  "description": "bencodex",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bencode",
+    "bencodex"
+  ],
+  "author": "JongChan Choi <jong@chan.moe>",
+  "license": "Zlib"
+}
