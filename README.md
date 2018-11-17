@@ -1,9 +1,15 @@
 # bencodex
 
+## requirements
+- nodejs 11 (or 10 with [Array.prototype.flat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) polyfill)
+- typescript 3.2 (bigint)
+
+## install
 ```sh
 npm install bencodex
 ```
 
+## usage
 ```js
 const { encode, decode } = require('bencodex');
 

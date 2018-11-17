@@ -1,18 +1,25 @@
 {
   "name": "bencodex",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "bencodex",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "engines": {
     "node": ">=11"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf ./lib && tsc",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "bencode",
     "bencodex"
   ],
   "author": "JongChan Choi <jong@chan.moe>",
-  "license": "Zlib"
+  "license": "Zlib",
+  "devDependencies": {
+    "@types/node": "^10.12.9",
+    "rimraf": "^2.6.2",
+    "typescript": "^3.2.0-rc"
+  }
 }
