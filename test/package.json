@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "test": "sucrase-node test.ts",
+        "build:haxe": "cd fixtures && yes a | haxelib install all && haxe ./build.hxml"
+    },
+    "dependencies": {
+        "sucrase": "^3.7.0"
+    }
+}
