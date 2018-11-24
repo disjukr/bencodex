@@ -2,8 +2,6 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "esnext",
-        "outDir": "lib",
-        "declaration": true,
         "lib": [
             "esnext"
         ],
