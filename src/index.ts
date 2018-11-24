@@ -7,11 +7,11 @@ export interface EncodableDict extends Map<string | Buffer, Encodable> {}
 export interface EncodableObject { [key: string]: Encodable; }
 export interface EncodableArray extends Array<Encodable> {}
 
-export type EncodeResult = Buffer | EncodeResultArray;
-export interface EncodeResultArray extends Array<EncodeResult> {}
+type EncodeResult = Buffer | EncodeResultArray;
+interface EncodeResultArray extends Array<EncodeResult> {}
 
-export type DecodeResult<TSucc, TFail = TSucc> = [TFail, 0] | [TSucc, number];
-export interface DecodeFunction<TSucc, TFail = TSucc> { (data: Buffer, offset: number): DecodeResult<TSucc, TFail>; }
+type DecodeResult<TSucc, TFail = TSucc> = [TFail, 0] | [TSucc, number];
+interface DecodeFunction<TSucc, TFail = TSucc> { (data: Buffer, offset: number): DecodeResult<TSucc, TFail>; }
 
 export function encode(data: Encodable): Buffer {
     return Buffer.concat([encodeAny(data)].flat(Infinity));
