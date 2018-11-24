@@ -13,10 +13,10 @@ const testsuite = [...new Set(
 
 for (const testcase of testsuite) {
     const dat = fs.readFileSync(path.resolve(testsuiteDir, `${testcase}.dat`));
-    const obj = jsonToObj(JSON.parse(fs.readFileSync(path.resolve(testsuiteDir, `${testcase}.json`), 'utf8')));
+    const val = astToVal(JSON.parse(fs.readFileSync(path.resolve(testsuiteDir, `${testcase}.json`), 'utf8')));
     console.log('--', testcase, '--');
-    const encodeResult = encode(obj).equals(dat);
-    const decodeResult = eq(decode(dat)!, obj);
+    const encodeResult = encode(val).equals(dat);
+    const decodeResult = eq(decode(dat)!, val);
     console.log('encode:', encodeResult ? 'ok' : 'fail');
     console.log('decode:', decodeResult ? 'ok' : 'fail');
     ok(encodeResult && decodeResult, testcase);
@@ -44,28 +44,28 @@ function eq(a: BencodexValue, b: BencodexValue): boolean {
     return false;
 }
 
-type JsonObject =
+type BencodexAstNode =
     { type: 'null' } |
     { type: 'boolean', value: boolean } |
     { type: 'integer', decimal: string } |
     { type: 'binary', base64: string } |
     { type: 'text', value: string } |
-    { type: 'list', values: JsonObject[] } |
-    { type: 'dictionary', pairs: { key: JsonObject, value: JsonObject }[] };
-function jsonToObj(jsonObj: JsonObject): BencodexValue {
-    switch (jsonObj.type) {
+    { type: 'list', values: BencodexAstNode[] } |
+    { type: 'dictionary', pairs: { key: BencodexAstNode, value: BencodexAstNode }[] };
+function astToVal(astNode: BencodexAstNode): BencodexValue {
+    switch (astNode.type) {
         case 'null': return null;
-        case 'boolean': return jsonObj.value;
-        case 'integer': return BigInt(jsonObj.decimal);
-        case 'binary': return Buffer.from(jsonObj.base64, 'base64');
-        case 'text': return jsonObj.value;
-        case 'list': return jsonObj.values.map(jsonToObj);
+        case 'boolean': return astNode.value;
+        case 'integer': return BigInt(astNode.decimal);
+        case 'binary': return Buffer.from(astNode.base64, 'base64');
+        case 'text': return astNode.value;
+        case 'list': return astNode.values.map(astToVal);
         case 'dictionary':
             return new Map(
-                jsonObj.pairs.map(
+                astNode.pairs.map(
                     ({ key, value }) => [
-                        jsonToObj(key),
-                        jsonToObj(value),
+                        astToVal(key),
+                        astToVal(value),
                     ] as [string | Buffer, BencodexValue]
                 )
             );
