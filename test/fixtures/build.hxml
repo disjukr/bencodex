@@ -1,4 +1,0 @@
--main Yaml2Js
--lib hxnodejs
--lib yaml:git:https://github.com/mikestead/hx-yaml.git#ee02b55bd5803438b67bf444dec46cae04d947bf
---js Yaml2Js.js

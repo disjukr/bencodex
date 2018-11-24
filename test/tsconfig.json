@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "outDir": "lib",
+        "declaration": true,
+        "lib": [
+            "esnext"
+        ],
+        "types": ["node"],
+        "strict": true,
+        "noUnusedLocals": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
