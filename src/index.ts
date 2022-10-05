@@ -4,7 +4,7 @@ export type BencodexValue = null | boolean | bigint | string | Buffer | Bencodex
 export interface BencodexDict extends Map<string | Buffer, BencodexValue> {}
 export interface BencodexList extends Array<BencodexValue> {}
 
-export type Encodable = BencodexValue | undefined | number | ArrayBuffer | EncodableDict | EncodableObject | EncodableArray;
+export type Encodable = BencodexValue | undefined | number | ArrayBuffer | ArrayBufferView | EncodableDict | EncodableObject | EncodableArray;
 export interface EncodableDict extends Map<string | Buffer, Encodable> {}
 export interface EncodableObject { [key: string]: Encodable; }
 export interface EncodableArray extends Array<Encodable> {}
@@ -38,6 +38,7 @@ const encodeAny = (data: Encodable): EncodeResult => {
     }
     if (isBuffer(data)) return encodeByteString(data);
     if (data instanceof ArrayBuffer) return encodeByteString(Buffer.from(data));
+    if (ArrayBuffer.isView(data)) return encodeByteString(Buffer.from(data.buffer, data.byteOffset, data.byteLength));
     if (Array.isArray(data)) return encodeList(data);
     if (data instanceof Map) return encodeDict(data);
     return encodeDict(new Map(Object.entries(data)));
