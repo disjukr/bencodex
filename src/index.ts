@@ -1,3 +1,5 @@
+import isBuffer = require("is-buffer");
+
 export type BencodexValue = null | boolean | bigint | string | Buffer | BencodexDict | BencodexList;
 export interface BencodexDict extends Map<string | Buffer, BencodexValue> {}
 export interface BencodexList extends Array<BencodexValue> {}
@@ -34,7 +36,7 @@ const encodeAny = (data: Encodable): EncodeResult => {
     case 'number': return encodeInteger(data | 0);
     case 'string': return encodeUnicodeString(data);
     }
-    if (data instanceof Buffer) return encodeByteString(data);
+    if (isBuffer(data)) return encodeByteString(data);
     if (data instanceof ArrayBuffer) return encodeByteString(Buffer.from(data));
     if (Array.isArray(data)) return encodeList(data);
     if (data instanceof Map) return encodeDict(data);
