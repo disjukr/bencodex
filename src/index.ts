@@ -13,20 +13,8 @@ interface EncodeResultArray extends Array<EncodeResult> {}
 type DecodeResult<TSucc, TFail = TSucc> = [TFail, 0] | [TSucc, number];
 interface DecodeFunction<TSucc, TFail = TSucc> { (data: Buffer, offset: number): DecodeResult<TSucc, TFail>; }
 
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-function isBuffer (obj: unknown): obj is Buffer {
-    return obj != null && obj.constructor != null &&
-    // @ts-ignore
-      typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
 export function encode(data: Encodable): Buffer {
-    return Buffer.concat([encodeAny(data)].flat(Infinity));
+    return Buffer.concat(([encodeAny(data)] as any[]).flat(Infinity));
 };
 
 const $sep = Buffer.from(':');
@@ -46,7 +34,7 @@ const encodeAny = (data: Encodable): EncodeResult => {
     case 'number': return encodeInteger(data | 0);
     case 'string': return encodeUnicodeString(data);
     }
-    if (isBuffer(data)) return encodeByteString(data);
+    if (Buffer.isBuffer(data)) return encodeByteString(data);
     if (data instanceof ArrayBuffer) return encodeByteString(Buffer.from(data));
     if (ArrayBuffer.isView(data)) return encodeByteString(Buffer.from(data.buffer, data.byteOffset, data.byteLength));
     if (Array.isArray(data)) return encodeList(data);
